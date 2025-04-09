@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
 	"log"
 	"math/rand"
 	"net/http"
@@ -13,42 +13,43 @@ import (
 )
 
 func rollDice(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	w.Header().Set("Access-Control-Allow-Methods", "GET")
 	vars := mux.Vars(r)
-	dice := vars["dice"] // e.g., "2d6"
+	dice := vars["dice"]
 
-	// Split dice notation (e.g., "2d6" -> "2" and "6")
 	parts := strings.Split(dice, "d")
 	if len(parts) != 2 {
 		http.Error(w, "Invalid dice format. Use NdM (e.g., 2d6)", http.StatusBadRequest)
 		return
 	}
 
-	count, err := strconv.Atoi(parts[0]) // Number of dice
+	count, err := strconv.Atoi(parts[0])
 	if err != nil || count < 1 {
 		http.Error(w, "Invalid number of dice", http.StatusBadRequest)
 		return
 	}
 
-	sides, err := strconv.Atoi(parts[1]) // Sides per die
+	sides, err := strconv.Atoi(parts[1])
 	if err != nil || sides < 1 {
 		http.Error(w, "Invalid die type", http.StatusBadRequest)
 		return
 	}
 
-	// Seed random number generator
 	rand.Seed(time.Now().UnixNano())
-
-	// Roll the dice
 	rolls := make([]int, count)
 	total := 0
 	for i := 0; i < count; i++ {
-		rolls[i] = rand.Intn(sides) + 1 // 1 to sides
+		rolls[i] = rand.Intn(sides) + 1
 		total += rolls[i]
 	}
 
-	// Send response
+	response := map[string]interface{}{
+		"rolls": rolls,
+		"total": total,
+	}
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprintf(w, `{"rolls": %v, "total": %d}`, rolls, total)
+	json.NewEncoder(w).Encode(response) // Proper JSON encoding
 }
 
 func main() {

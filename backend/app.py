@@ -1,17 +1,21 @@
 from flask import Flask, request, jsonify, session
 from flask_session import Session
+from flask_cors import CORS  # Add this import
 import sqlite3
 import os
 from datetime import datetime
 
 app = Flask(__name__)
 
-# Configure session to use filesystem (for simplicity)
+# Enable CORS for all routes, allowing credentials
+CORS(app, supports_credentials=True)
+
+# Configure session to use filesystem
 app.config['SESSION_TYPE'] = 'filesystem'
-app.config['SECRET_KEY'] = 'your-secret-key-here'  # Replace with a random string
+app.config['SECRET_KEY'] = 'your-secret-key-here'
 Session(app)
 
-# SQLite database setup
+# SQLite database setup (unchanged)
 DB_PATH = os.path.join(os.path.dirname(__file__), 'db', 'rolls.db')
 
 def init_db():
@@ -26,10 +30,10 @@ def init_db():
 @app.route('/save-roll', methods=['POST'])
 def save_roll():
     if 'sid' not in session:
-        session['sid'] = os.urandom(24).hex()  # Generate a unique session ID
+        session['sid'] = os.urandom(24).hex()
     data = request.json
-    dice = data.get('dice')  # e.g., "2d6"
-    result = data.get('result')  # e.g., {"rolls": [4, 6], "total": 10}
+    dice = data.get('dice')
+    result = data.get('result')
 
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
@@ -55,5 +59,5 @@ def get_history():
     return jsonify({"history": rolls})
 
 if __name__ == '__main__':
-    init_db()  # Initialize the database on startup
+    init_db()
     app.run(host='0.0.0.0', port=5000, debug=True)
