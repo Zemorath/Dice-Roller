@@ -4,18 +4,23 @@ from flask_cors import CORS
 import sqlite3
 import os
 from datetime import datetime
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-# Enable CORS for all routes, allowing credentials
+# Enable CORS
 CORS(app, supports_credentials=True, origins=["https://dice-roller-frontend.onrender.com"])
 
-# Configure session to use filesystem
-app.config['SESSION_TYPE'] = 'filesystem'
+# Configure session to use SQLAlchemy
+app.config['SESSION_TYPE'] = 'sqlalchemy'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////app/db/sessions.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'your-secret-key-here'
+db = SQLAlchemy(app)
+app.config['SESSION_SQLALCHEMY'] = db
 Session(app)
 
-# SQLite database setup
+# SQLite database setup for rolls
 DB_PATH = os.path.join(os.path.dirname(__file__), 'db', 'rolls.db')
 
 def init_db():
@@ -60,5 +65,5 @@ def get_history():
 
 if __name__ == '__main__':
     init_db()
-    port = int(os.getenv("PORT", 5000))  # Default to 5000 locally
+    port = int(os.getenv("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=False)
