@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, session
 from flask_session import Session
-from flask_cors import CORS  # Add this import
+from flask_cors import CORS
 import sqlite3
 import os
 from datetime import datetime
@@ -8,14 +8,14 @@ from datetime import datetime
 app = Flask(__name__)
 
 # Enable CORS for all routes, allowing credentials
-CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True, origins=["https://dice-roller-frontend.onrender.com"])
 
 # Configure session to use filesystem
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SECRET_KEY'] = 'your-secret-key-here'
 Session(app)
 
-# SQLite database setup (unchanged)
+# SQLite database setup
 DB_PATH = os.path.join(os.path.dirname(__file__), 'db', 'rolls.db')
 
 def init_db():

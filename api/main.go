@@ -14,7 +14,7 @@ import (
 )
 
 func rollDice(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	w.Header().Set("Access-Control-Allow-Origin", "https://dice-roller-frontend.onrender.com")
 	w.Header().Set("Access-Control-Allow-Methods", "GET")
 	vars := mux.Vars(r)
 	dice := vars["dice"]
