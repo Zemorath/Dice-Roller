@@ -23,6 +23,19 @@ db = SQLAlchemy(app)
 app.config['SESSION_SQLALCHEMY'] = db
 Session(app)
 
+# Create the sessions table for Flask-SQLAlchemy
+with app.app_context():
+    db.create_all()
+    # Manually create the sessions table if it doesn't exist (Flask-Session requirement)
+    db.engine.execute('''
+        CREATE TABLE IF NOT EXISTS sessions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            session_id TEXT UNIQUE,
+            data TEXT,
+            expiry DATETIME
+        )
+    ''')
+
 # In-memory SQLite for rolls
 def get_db_connection():
     conn = sqlite3.connect(':memory:', check_same_thread=False)
