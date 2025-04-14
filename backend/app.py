@@ -1,35 +1,24 @@
 from flask import Flask, request, jsonify, session
-from flask_session import Session
 from flask_cors import CORS
 import sqlite3
 import os
 from datetime import datetime
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql import text
+import logging
 
 app = Flask(__name__)
+
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 # Enable CORS
 CORS(app, supports_credentials=True, origins=["https://dice-roller-frontend.onrender.com"])
 
-# Configure session to use SQLAlchemy with in-memory SQLite
-app.config['SESSION_TYPE'] = 'sqlalchemy'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# Configure Flask session (cookie-based)
 app.config['SECRET_KEY'] = 'your-secret-key-here'
 app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-db = SQLAlchemy(app)
-app.config['SESSION_SQLALCHEMY'] = db
-Session(app)
-
-# Create the sessions table for Flask-SQLAlchemy
-with app.app_context():
-    # Use a connection to execute the SQL statement with text()
-    with db.engine.connect() as conn:
-        conn.execute(text('CREATE TABLE IF NOT EXISTS sessions (id INTEGER PRIMARY KEY AUTOINCREMENT, session_id TEXT UNIQUE, data TEXT, expiry DATETIME)'))
-        conn.commit()
 
 # In-memory SQLite for rolls
 def get_db_connection():
@@ -42,8 +31,14 @@ def get_db_connection():
 
 @app.route('/save-roll', methods=['POST'])
 def save_roll():
+    logger.debug("Entering /save-roll endpoint")
+    logger.debug(f"Session before setting sid: {session}")
     if 'sid' not in session:
         session['sid'] = os.urandom(24).hex()
+        logger.debug(f"Set new session sid: {session['sid']}")
+    else:
+        logger.debug(f"Existing session sid: {session['sid']}")
+
     data = request.json
     dice = data.get('dice')
     result = data.get('result')
@@ -55,11 +50,15 @@ def save_roll():
     conn.commit()
     conn.close()
 
+    logger.debug(f"Returning response with session_id: {session['sid']}")
     return jsonify({"message": "Roll saved", "session_id": session['sid']})
 
 @app.route('/history', methods=['GET'])
 def get_history():
+    logger.debug("Entering /history endpoint")
+    logger.debug(f"Session: {session}")
     if 'sid' not in session:
+        logger.warning("No session ID found")
         return jsonify({"error": "No session found"}), 400
 
     conn = get_db_connection()
@@ -69,6 +68,7 @@ def get_history():
     rolls = [{"dice": row[0], "result": eval(row[1]), "timestamp": row[2]} for row in c.fetchall()]
     conn.close()
 
+    logger.debug(f"Returning history: {rolls}")
     return jsonify({"history": rolls})
 
 if __name__ == '__main__':
