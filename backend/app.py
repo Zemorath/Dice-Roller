@@ -5,6 +5,7 @@ import sqlite3
 import os
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import text
 
 app = Flask(__name__)
 
@@ -25,16 +26,9 @@ Session(app)
 
 # Create the sessions table for Flask-SQLAlchemy
 with app.app_context():
-    # Use a connection to execute the SQL statement
+    # Use a connection to execute the SQL statement with text()
     with db.engine.connect() as conn:
-        conn.execute('''
-            CREATE TABLE IF NOT EXISTS sessions (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                session_id TEXT UNIQUE,
-                data TEXT,
-                expiry DATETIME
-            )
-        ''')
+        conn.execute(text('CREATE TABLE IF NOT EXISTS sessions (id INTEGER PRIMARY KEY AUTOINCREMENT, session_id TEXT UNIQUE, data TEXT, expiry DATETIME)'))
         conn.commit()
 
 # In-memory SQLite for rolls
