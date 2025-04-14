@@ -5,6 +5,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -56,6 +57,10 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/roll/{dice}", rollDice).Methods("GET")
 
-	log.Println("Starting server on :8080")
-	log.Fatal(http.ListenAndServe(":8080", router))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Fallback for local dev
+	}
+	log.Printf("Starting server on :%s", port)
+	log.Fatal(http.ListenAndServe("0.0.0.0:"+port, router))
 }

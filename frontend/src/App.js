@@ -28,14 +28,14 @@ function AppContent() {
     }
 
     try {
-      const rollResponse = await fetch(`http://localhost:8080/roll/${diceInput}`);
+      const rollResponse = await fetch(`${process.env.REACT_APP_API_URL}/roll/${diceInput}`);
       if (!rollResponse.ok) {
         throw new Error(`Go API error: ${rollResponse.status} ${rollResponse.statusText}`);
       }
       const rollData = await rollResponse.json();
       setRollResult(rollData);
 
-      const saveResponse = await fetch('http://localhost:5000/save-roll', {
+      const saveResponse = await fetch(`${process.env.REACT_APP_BACKEND_URL}/save-roll`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ dice: diceInput, result: rollData }),
@@ -55,7 +55,7 @@ function AppContent() {
 
   const fetchHistory = async () => {
     try {
-      const historyResponse = await fetch('http://localhost:5000/history', {
+      const historyResponse = await fetch(`${process.env.REACT_APP_BACKEND_URL}/history`, {
         credentials: 'include',
       });
       const historyData = await historyResponse.json();
