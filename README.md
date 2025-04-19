@@ -4,6 +4,8 @@
 
 <p>This project showcases my skills in full-stack development, including API design, backend development with database integration, frontend development with advanced UI features, and state management, making it a standout addition to my portfolio. Follow the instructions below to run the app locally and explore its features!</p>
 
+![image](https://github.com/user-attachments/assets/010731fe-fee4-4192-837d-6a7838eb95ed)
+
 <h2>Features</h2>
 
 <ul>
@@ -20,6 +22,8 @@
     <li><strong>Light/Dark Mode</strong>: Toggle between light and dark themes for a comfortable viewing experience.</li>
     <li><strong>Responsive Design</strong>: Built with Tailwind CSS for a clean, responsive UI that works on desktop and mobile.</li>
 </ul>
+
+![image](https://github.com/user-attachments/assets/dffdabd3-2c66-4d88-bab4-0a3a9134e975)
 
 <h2>Tech Stack</h2>
 
