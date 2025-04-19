@@ -1,7 +1,41 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import { ThemeContext, ThemeProvider } from './ThemeContext';
 import StatsPage from './StatsPage';
+
+// Theme Context for dark mode
+export const ThemeContext = createContext();
+
+export function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState('light');
+
+  // Toggle theme and persist in localStorage
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
+
+  // Load theme from localStorage on mount
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    setTheme(savedTheme);
+  }, []);
+
+  // Apply theme class to document
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
 
 function App() {
   return (
@@ -17,6 +51,7 @@ function AppContent() {
   const [rollResult, setRollResult] = useState(null);
   const [history, setHistory] = useState([]);
 
+  // Fetch roll history on mount
   useEffect(() => {
     fetchHistory();
   }, []);
@@ -28,25 +63,25 @@ function AppContent() {
     }
 
     try {
-      const rollResponse = await fetch(`${process.env.REACT_APP_API_URL}/roll/${diceInput}`);
+      const rollResponse = await fetch(`http://localhost:8080/roll/${diceInput}`);
       if (!rollResponse.ok) {
         throw new Error(`Go API error: ${rollResponse.status} ${rollResponse.statusText}`);
       }
       const rollData = await rollResponse.json();
       setRollResult(rollData);
 
-      const saveResponse = await fetch(`${process.env.REACT_APP_BACKEND_URL}/save-roll`, {
+      const saveResponse = await fetch('http://localhost:5000/save-roll', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ dice: diceInput, result: rollData }),
         credentials: 'include',
       });
-      if (!rollResponse.ok) {
+      if (!saveResponse.ok) {
         throw new Error(`Flask backend error: ${saveResponse.status} ${saveResponse.statusText}`);
       }
       await saveResponse.json();
 
-      await fetchHistory();
+      fetchHistory();
     } catch (error) {
       console.error('Error in rollDice:', error);
       alert(`Failed to roll dice: ${error.message}`);
@@ -55,7 +90,7 @@ function AppContent() {
 
   const fetchHistory = async () => {
     try {
-      const historyResponse = await fetch(`${process.env.REACT_APP_BACKEND_URL}/history`, {
+      const historyResponse = await fetch('http://localhost:5000/history', {
         credentials: 'include',
       });
       const historyData = await historyResponse.json();
@@ -87,7 +122,6 @@ function AppContent() {
           </button>
         </div>
 
-        {/* Updated Navigation */}
         <nav className="mb-6 flex space-x-4">
           <Link
             to="/"

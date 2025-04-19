@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
-import { ThemeContext } from './ThemeContext';
+import { ThemeContext } from './App';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend);
 
@@ -44,7 +44,7 @@ function StatsPage({ history }) {
       {
         label: `Roll Totals (d${selectedDie === 'All' ? 'All' : selectedDie})`,
         data: Object.values(totalCounts),
-        backgroundColor: theme === 'dark' ? 'rgba(74, 222, 128, 0.5)' : 'rgba(34, 197, 94, 0.5)', // Brighter green in dark mode
+        backgroundColor: theme === 'dark' ? 'rgba(74, 222, 128, 0.5)' : 'rgba(34, 197, 94, 0.5)',
         borderColor: theme === 'dark' ? 'rgba(74, 222, 128, 1)' : 'rgba(34, 197, 94, 1)',
         borderWidth: 1,
       },
@@ -59,7 +59,7 @@ function StatsPage({ history }) {
         label: 'Roll Totals',
         data: totals,
         fill: false,
-        borderColor: theme === 'dark' ? 'rgba(252, 165, 165, 1)' : 'rgba(239, 68, 68, 1)', // Softer red in dark mode
+        borderColor: theme === 'dark' ? 'rgba(252, 165, 165, 1)' : 'rgba(239, 68, 68, 1)',
         backgroundColor: theme === 'dark' ? 'rgba(252, 165, 165, 0.5)' : 'rgba(239, 68, 68, 0.5)',
         tension: 0.1,
       },

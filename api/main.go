@@ -5,7 +5,6 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
-	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -14,7 +13,7 @@ import (
 )
 
 func rollDice(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://dice-roller-frontend.onrender.com")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 	w.Header().Set("Access-Control-Allow-Methods", "GET")
 	vars := mux.Vars(r)
 	dice := vars["dice"]
@@ -50,17 +49,13 @@ func rollDice(w http.ResponseWriter, r *http.Request) {
 		"total": total,
 	}
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response) // Proper JSON encoding
+	json.NewEncoder(w).Encode(response)
 }
 
 func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/roll/{dice}", rollDice).Methods("GET")
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080" // Fallback for local dev
-	}
-	log.Printf("Starting server on :%s", port)
-	log.Fatal(http.ListenAndServe("0.0.0.0:"+port, router))
+	log.Println("Starting server on :8080")
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
