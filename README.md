@@ -1,247 +1,170 @@
-TTRPG Dice Roller
-
-Welcome to the TTRPG Dice Roller, a full-stack web application designed for tabletop RPG players to roll virtual dice and analyze their roll history. Whether you're rolling a d20 for a critical hit or 2d6 for a skill check, this app provides a seamless experience with a user-friendly interface, detailed statistics, and a light/dark mode toggle for better usability.
-
-This project showcases my skills in full-stack development, including API design, frontend development, and state management, making it a great addition to my portfolio. Follow the instructions below to run the app locally and explore its features!
-
-Features
-
-
-
-
-
-Virtual Dice Rolling: Roll any standard TTRPG dice (e.g., 1d20, 2d6, 3d8) using a RESTful API built with Go.
-
-
-
-Roll History: View your roll history, stored in the browser using localStorage, with details like the dice rolled, individual results, total, and timestamp.
-
-
-
-Detailed Statistics: Analyze your rolls with a stats page featuring:
-
-
-
-
-
-Average and most common roll totals.
-
-
-
-Per-die-type breakdown (e.g., stats for d6, d20).
-
-
-
-Interactive bar chart for roll distribution, filterable by die type.
-
-
-
-Line chart showing roll totals over time.
-
-
-
-Light/Dark Mode: Toggle between light and dark themes for a comfortable viewing experience.
-
-
-
-Responsive Design: Built with Tailwind CSS for a clean, responsive UI that works on desktop and mobile.
-
-Tech Stack
-
-
-
-
-
-Frontend: React, Tailwind CSS, Chart.js
-
-
-
-API: Go (with gorilla/mux for routing)
-
-
-
-Deployment: Designed for local testing (originally deployed on Render’s free tier, now local-only)
-
-Prerequisites
-
-Before setting up the project, ensure you have the following installed on your machine:
-
-
-
-
-
-Git: To clone the repository.
-
-
-
-Node.js and npm: For the React frontend (Node.js 16+ recommended).
-
-
-
-Go: For the dice-rolling API (Go 1.22+ recommended).
-
-
-
-Python 3: For the Flask backend (Python 3.9+ recommended).
-
-
-
-pip: To install Python dependencies.
-
-You can check if these are installed by running:
-
-git --version
+<h1>TTRPG Dice Roller</h1>
+
+<p>Welcome to the <strong>TTRPG Dice Roller</strong>, a full-stack web application designed for tabletop RPG players to roll virtual dice and analyze their roll history. Whether you're rolling a d20 for a critical hit or 2d6 for a skill check, this app provides a seamless experience with a polished, user-friendly interface, detailed statistics, and a light/dark mode toggle for better usability.</p>
+
+<p>This project showcases my skills in full-stack development, including API design, backend development with database integration, frontend development with advanced UI features, and state management, making it a standout addition to my portfolio. Follow the instructions below to run the app locally and explore its features!</p>
+
+<h2>Features</h2>
+
+<ul>
+    <li><strong>Virtual Dice Rolling</strong>: Roll any standard TTRPG dice (e.g., 1d20, 2d6, 3d8) using a RESTful API built with Go.</li>
+    <li><strong>Roll History</strong>: View your roll history, stored server-side in a SQLite database, with details like the dice rolled, individual results, total, and timestamp.</li>
+    <li><strong>Detailed Statistics</strong>: Analyze your rolls with a stats page featuring:
+        <ul>
+            <li>Average and most common roll totals.</li>
+            <li>Per-die-type breakdown (e.g., stats for d6, d20).</li>
+            <li>Interactive bar chart for roll distribution, filterable by die type.</li>
+            <li>Line chart showing roll totals over time.</li>
+        </ul>
+    </li>
+    <li><strong>Light/Dark Mode</strong>: Toggle between light and dark themes for a comfortable viewing experience.</li>
+    <li><strong>Responsive Design</strong>: Built with Tailwind CSS for a clean, responsive UI that works on desktop and mobile.</li>
+</ul>
+
+<h2>Tech Stack</h2>
+
+<ul>
+    <li><strong>Frontend</strong>: React, Tailwind CSS, Chart.js</li>
+    <li><strong>Backend</strong>: Python Flask, SQLite</li>
+    <li><strong>API</strong>: Go (with <code>gorilla/mux</code> for routing)</li>
+    <li><strong>Deployment</strong>: Designed for local testing</li>
+</ul>
+
+<h2>Prerequisites</h2>
+
+<p>Before setting up the project, ensure you have the following installed on your machine:</p>
+
+<ul>
+    <li><strong>Git</strong>: To clone the repository.</li>
+    <li><strong>Node.js and npm</strong>: For the React frontend (Node.js 16+ recommended).</li>
+    <li><strong>Go</strong>: For the dice-rolling API (Go 1.22+ recommended).</li>
+    <li><strong>Python 3</strong>: For the Flask backend (Python 3.9+ recommended).</li>
+    <li><strong>pip</strong>: To install Python dependencies.</li>
+</ul>
+
+<p>You can check if these are installed by running:</p>
+
+<pre><code>git --version
 node --version
 npm --version
 go version
 python3 --version
-pip3 --version
+pip3 --version</code></pre>
 
-Setup Instructions
+<h2>Setup Instructions</h2>
 
-Follow these steps to clone the repository and install the necessary dependencies.
+<p>Follow these steps to clone the repository and install the necessary dependencies.</p>
 
-1. Clone the Repository
+<h3>1. Clone the Repository</h3>
 
-Clone the project to your local machine:
+<p>Clone the project to your local machine:</p>
 
-git clone https://github.com/Zemorath/Dice-Roller.git
-cd Dice-Roller
+<pre><code>git clone https://github.com/Zemorath/Dice-Roller.git
+cd Dice-Roller</code></pre>
 
-2. Install Dependencies
+<h3>2. Install Dependencies</h3>
 
-Go API (dice-roller-api)
+<h4>Go API (dice-roller-api)</h4>
 
-The API handles dice rolling and is located in the api/ directory.
+<p>The API handles dice rolling and is located in the <code>api/</code> directory.</p>
 
-cd api
-go mod tidy
+<pre><code>cd api
+go mod tidy</code></pre>
 
-This will install the required Go dependencies, including gorilla/mux.
+<p>This will install the required Go dependencies, including <code>gorilla/mux</code>.</p>
 
-Flask Backend (dice-roller-backend)
+<h4>Flask Backend (dice-roller-backend)</h4>
 
-The backend (though currently unused for roll history) is in the backend/ directory.
+<p>The backend manages roll history using SQLite and is located in the <code>backend/</code> directory.</p>
 
-cd ../backend
-pip3 install -r requirements.txt
+<pre><code>cd ../backend
+pip3 install -r requirements.txt</code></pre>
 
-This installs Flask, Flask-CORS, and gunicorn.
+<p>This installs Flask, Flask-Session, and Flask-CORS.</p>
 
-React Frontend (dice-roller-frontend)
+<h4>React Frontend (dice-roller-frontend)</h4>
 
-The frontend is in the frontend/ directory and requires Node.js dependencies.
+<p>The frontend is in the <code>frontend/</code> directory and requires Node.js dependencies.</p>
 
-cd ../frontend
-npm install
+<pre><code>cd ../frontend
+npm install</code></pre>
 
-This installs React, Tailwind CSS, Chart.js, React Router, and other dependencies.
+<p>This installs React, Tailwind CSS, Chart.js, React Router, and other dependencies.</p>
 
-3. Run the Application
+<h3>3. Run the Application</h3>
 
-You’ll need to run three components: the Go API, the Flask backend, and the React frontend. Open three separate terminal windows (or tabs) and run the following commands.
+<p>You’ll need to run three components: the Go API, the Flask backend, and the React frontend. Open three separate terminal windows (or tabs) and run the following commands.</p>
 
-Terminal 1: Run the Go API
+<h4>Terminal 1: Run the Go API</h4>
 
-cd Dice-Roller/api
-go run main.go
+<pre><code>cd Dice-Roller/api
+go run main.go</code></pre>
 
+<ul>
+    <li>The API will start on <code>http://localhost:8080</code>.</li>
+    <li>It handles dice rolling requests (e.g., <code>GET /roll/2d6</code>).</li>
+</ul>
 
+<h4>Terminal 2: Run the Flask Backend</h4>
 
+<pre><code>cd Dice-Roller/backend
+python3 app.py</code></pre>
 
+<ul>
+    <li>The backend will start on <code>http://localhost:5000</code>.</li>
+    <li>It manages roll history, storing rolls in a SQLite database (<code>backend/db/rolls.db</code>).</li>
+</ul>
 
-The API will start on http://localhost:8080.
+<h4>Terminal 3: Run the React Frontend</h4>
 
+<pre><code>cd Dice-Roller/frontend
+npm start</code></pre>
 
+<ul>
+    <li>The frontend will start on <code>http://localhost:3000</code> and open in your default browser.</li>
+</ul>
 
-It handles dice rolling requests (e.g., GET /roll/2d6).
+<h3>4. Test the App</h3>
 
-Terminal 2: Run the Flask Backend
+<ul>
+    <li>Open <code>http://localhost:3000</code> in your browser.</li>
+    <li>Enter a dice notation (e.g., “2d6”) and click “Roll” to roll dice.</li>
+    <li>View your roll history below the roll button (stored in the SQLite database).</li>
+    <li>Navigate to the “Stats” page to see detailed statistics, including:
+        <ul>
+            <li>Average and most common roll totals.</li>
+            <li>Per-die-type stats with roll counts, averages, and most common totals.</li>
+            <li>A bar chart of roll distributions, filterable by die type (e.g., d6, d20).</li>
+            <li>A line chart showing roll totals over time.</li>
+        </ul>
+    </li>
+    <li>Toggle between light and dark modes using the lightbulb icon in the top-right corner.</li>
+</ul>
 
-cd Dice-Roller/backend
-python3 app.py
+<h2>Notes</h2>
 
+<ul>
+    <li><strong>Roll History</strong>: Rolls are stored in a SQLite database (<code>backend/db/rolls.db</code>) on your local machine, persisting across sessions until the database is deleted.</li>
+    <li><strong>Local Testing</strong>: This app is designed to run locally. Ensure all three components (Go API, Flask backend, React frontend) are running as described above.</li>
+    <li><strong>Future Enhancements</strong>: The app could be extended with features like user authentication, more advanced statistics, or deployment to a hosting platform with persistent storage.</li>
+</ul>
 
+<h2>Contributing</h2>
 
+<p>Feel free to fork this repository, make improvements, and submit pull requests. If you encounter any issues or have suggestions, please open an issue on GitHub.</p>
 
+<h2>License</h2>
 
-The backend will start on http://localhost:5000.
+<p>This project is licensed under the MIT License—see the LICENSE file for details.</p>
 
+<h2>Acknowledgments</h2>
 
+<ul>
+    <li>Built as a portfolio project to demonstrate full-stack development skills.</li>
+    <li>Thanks to PRIMEAGEN for inspiring me to take on this project during my coding bootcamp.</li>
+    <li>Thanks to the open-source community for tools like React, Tailwind CSS, Flask, Go, and Chart.js.</li>
+</ul>
 
-Note: The backend is currently unused since roll history is stored client-side, but it’s included for potential future enhancements.
+<p>---</p>
 
-Terminal 3: Run the React Frontend
-
-cd Dice-Roller/frontend
-npm start
-
-
-
-
-
-The frontend will start on http://localhost:3000 and open in your default browser.
-
-4. Test the App
-
-
-
-
-
-Open http://localhost:3000 in your browser.
-
-
-
-Enter a dice notation (e.g., “2d6”) and click “Roll” to roll dice.
-
-
-
-View your roll history below the roll button (stored in your browser’s localStorage).
-
-
-
-Navigate to the “Stats” page to see detailed statistics and charts of your rolls.
-
-
-
-Toggle between light and dark modes using the lightbulb icon in the top-right corner.
-
-Notes
-
-
-
-
-
-Roll History: Rolls are stored in your browser using localStorage, so they persist across page refreshes but are not synced across devices or browsers. Clearing browser data will reset the history.
-
-
-
-Local Testing: This app is designed to run locally. Ensure all three components (Go API, Flask backend, React frontend) are running as described above.
-
-
-
-Future Enhancements: To enable server-side roll persistence, the app could be extended with a database like SQLite or PostgreSQL, requiring a hosting platform with persistent storage support.
-
-Contributing
-
-Feel free to fork this repository, make improvements, and submit pull requests. If you encounter any issues or have suggestions, please open an issue on GitHub.
-
-License
-
-This project is licensed under the MIT License—see the LICENSE file for details.
-
-Acknowledgments
-
-
-
-
-
-Built as a portfolio project to demonstrate full-stack development skills.
-
-
-
-Thanks to the open-source community for tools like React, Tailwind CSS, and Chart.js.
-
-
-
-Happy rolling! 🎲
+<p>Happy rolling! 🎲</p>
